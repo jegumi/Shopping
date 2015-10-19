@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Shopping</string>
+    <string name="men">MEN</string>
+    <string name="women">WOMEN</string>
+    <string name="product">Product</string>
+    <string name="add_to_bag">Add to Bag (%1$s)</string>
+    <string name="added_to_bag">%1$d Added to Bag (%2$s)</string>
+    <string name="added_to_bag_feedback">Added to Bag</string>
+    <string name="error_loading_category">Error adding category</string>
+    <string name="error_loading_data">Error loading data</string>
+    <string name="error_no_connectivity">Cannot load data. Check your connectivity and try again</string>
+
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="divider">#C3C3C3</color>
+    <color name="colorPrimary">#F44336</color>
+    <color name="colorPrimaryDark">#B71C1C</color>
+    <color name="main_bg">#FFFFFF</color>
+
+    <color name="main_text">#333333</color>
+    <color name="secondary_text">#222222</color>
+    <color name="menu_text">#FFFFFF</color>
+    <color name="header_bg">#C3C3C3</color>
+
+    <color name="button_main_color_bg">#dc9a3c</color>
+    <color name="button_main_color_disabled_bg">#4cdc9a3c</color>
+    <color name="button_main_color_pressed_bg">#7f5923</color>
+
+    <color name="button_header_color_bg">#C3C3C3</color>
+    <color name="button_header_color_pressed_bg">#F44336</color>
+
+</resources>

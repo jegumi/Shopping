@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/LayoutDefaultNoPadding"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/categories_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_big"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:padding="@dimen/spacing_medium">
+
+        <Button
+            android:id="@+id/category_men"
+            style="@style/MenuHeaderItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/men" />
+
+        <Button
+            android:id="@+id/category_women"
+            style="@style/MenuHeaderItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/women" />
+
+    </LinearLayout>
+
+    <ImageView
+        style="@style/SeparatorDefault"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>
