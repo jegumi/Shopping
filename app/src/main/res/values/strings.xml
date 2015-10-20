@@ -11,5 +11,18 @@
     <string name="error_loading_category">Error adding category</string>
     <string name="error_loading_data">Error loading data</string>
     <string name="error_no_connectivity">Cannot load data. Check your connectivity and try again</string>
+    <string name="added_favourites">Added to favourites</string>
+    <string name="removed_favourites">Removed from favourites</string>
+    <string name="price">%1$s %2$s</string>
+    <string name="favourites">Favourites</string>
+    <string name="basket">Basket</string>
+    <plurals name="basket_items">
+        <item quantity="one">%1$d item on the basket</item>
+        <item quantity="other">%1$d items on the basket</item>
+    </plurals>
+    <plurals name="fav_items">
+        <item quantity="one">%1$d favourited item</item>
+        <item quantity="other">%1$d favourited items</item>
+    </plurals>
 
 </resources>

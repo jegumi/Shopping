@@ -5,6 +5,7 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.jegumi.shopping.ShoppingApplication;
 import com.jegumi.shopping.model.Menu;
 import com.jegumi.shopping.model.ProductDetails;
 import com.jegumi.shopping.model.Products;
@@ -19,6 +20,7 @@ public class Api {
     private static final String PRODUCT_CATEGORY_ENDPOINT = "anycat_products.json";
     private static final String PRODUCT_DETAILS_ENDPOINT = "anyproduct_details.json";
     private static final String CATEGORY_KEY = "catid";
+    private static final Context mContext = ShoppingApplication.getContext();
 
     public static String getMenEndPoint() {
         return BASE_URL + MEN_ENDPOINT;
@@ -40,9 +42,9 @@ public class Api {
         VolleySingleton.getInstance(context).getRequestQueue().cancelAll(TAG);
     }
 
-    public static void loadCategories(Context context, MainActivity.MenuCategories category,
+    public static void loadCategories(MainActivity.MenuCategories category,
                                       Response.Listener<Menu> listener, Response.ErrorListener errorListener) {
-        RequestQueue queue = VolleySingleton.getInstance(context).getRequestQueue();
+        RequestQueue queue = VolleySingleton.getInstance(mContext).getRequestQueue();
 
         String uri = category == MainActivity.MenuCategories.MEN ? Api.getMenEndPoint() : Api.getWomenEndPoint();
 
@@ -57,9 +59,9 @@ public class Api {
         queue.add(jsObjRequest);
     }
 
-    public static void loadProducts(Context context, String catId, Response.Listener<Products> listener,
+    public static void loadProducts(String catId, Response.Listener<Products> listener,
                                     Response.ErrorListener errorListener) {
-        RequestQueue queue = VolleySingleton.getInstance(context).getRequestQueue();
+        RequestQueue queue = VolleySingleton.getInstance(mContext).getRequestQueue();
 
         String uri = Api.getProductEndPoint(catId);
         GSonRequest<Products> jsObjRequest = new GSonRequest<>(
@@ -73,9 +75,9 @@ public class Api {
         queue.add(jsObjRequest);
     }
 
-    public static void loadProductDetails(Context context, int productId, Response.Listener<ProductDetails> listener,
+    public static void loadProductDetails(int productId, Response.Listener<ProductDetails> listener,
                                           Response.ErrorListener errorListener) {
-        RequestQueue queue = VolleySingleton.getInstance(context).getRequestQueue();
+        RequestQueue queue = VolleySingleton.getInstance(mContext).getRequestQueue();
 
         String uri = Api.getProductDetailsEndpoint(productId);
         GSonRequest<ProductDetails> jsObjRequest = new GSonRequest<>(

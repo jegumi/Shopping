@@ -24,7 +24,9 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/gallery_height">
+                android:layout_height="@dimen/gallery_height"
+                android:paddingBottom="@dimen/spacing_medium"
+                android:paddingTop="@dimen/spacing_medium">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/products_images_recycler_view"

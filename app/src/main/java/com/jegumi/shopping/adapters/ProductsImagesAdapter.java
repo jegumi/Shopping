@@ -23,7 +23,7 @@ public class ProductsImagesAdapter extends RecyclerView.Adapter<ProductsImagesAd
 
     @Override
     public ProductImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.product_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.gallery_item, parent, false);
         mImageLoader = ImageCacheManager.getInstance().getImageLoader();
         return new ProductImageViewHolder(v);
     }

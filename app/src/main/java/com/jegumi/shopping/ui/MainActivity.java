@@ -142,7 +142,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void setMenuAdapter() {
-        Api.loadCategories(this, mCurrentCategory, new Response.Listener<Menu>() {
+        Api.loadCategories(mCurrentCategory, new Response.Listener<Menu>() {
                     @Override
                     public void onResponse(Menu menu) {
                         Category[] categories = menu.Listing;

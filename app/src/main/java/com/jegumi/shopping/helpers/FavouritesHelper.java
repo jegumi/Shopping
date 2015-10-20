@@ -12,7 +12,15 @@ public class FavouritesHelper {
         mFavouritesMap.put(productId, productId);
     }
 
+    public void removeFromFavourites(int productId) {
+        mFavouritesMap.remove(productId);
+    }
+
     public boolean isInFavourites(int productId) {
         return mFavouritesMap.containsKey(productId);
+    }
+
+    public int getNumberOfElements() {
+        return mFavouritesMap.size();
     }
 }

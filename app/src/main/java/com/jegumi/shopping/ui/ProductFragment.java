@@ -26,7 +26,6 @@ import java.util.Arrays;
 // Nothing interesting to comment here. This fragment doesn't change with rotation, as the
 // layout is quite simple, so in the manifest it's indicated not to reload it on config changes
 
-
 public class ProductFragment extends Fragment {
 
     private RecyclerView mProductImagesRecyclerView;
@@ -39,7 +38,7 @@ public class ProductFragment extends Fragment {
     public static ProductFragment newInstance(int productId) {
         ProductFragment productFragment = new ProductFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(MainActivity.EXTRA_CATEGORY, productId);
+        bundle.putInt(MainActivity.EXTRA_PRODUCT, productId);
         productFragment.setArguments(bundle);
         return productFragment;
     }
@@ -77,14 +76,14 @@ public class ProductFragment extends Fragment {
     }
 
     private void initProduct(final int productId) {
-        Api.loadProductDetails(getActivity(), productId, new Response.Listener<ProductDetails>() {
+        Api.loadProductDetails(productId, new Response.Listener<ProductDetails>() {
             @Override
             public void onResponse(final ProductDetails productDetails) {
                 mBrandName.setText(productDetails.Brand);
                 mDetails.setText(productDetails.Description);
 
-                if (ShoppingApplication.getBagHelper().isInBag(productDetails.ProductId)) {
-                    updateButtonText(productDetails);
+                if (ShoppingApplication.getBagHelper().isInBag(productId)) {
+                    updateButtonText(productDetails, productId);
                 } else {
                     mAddToBag.setText(getString(R.string.add_to_bag, productDetails.CurrentPrice));
                 }
@@ -92,8 +91,8 @@ public class ProductFragment extends Fragment {
                 mAddToBag.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ShoppingApplication.getBagHelper().addToBag(productDetails.ProductId);
-                        updateButtonText(productDetails);
+                        ShoppingApplication.getBagHelper().addToBag(productId);
+                        updateButtonText(productDetails, productId);
 
                         Toast.makeText(v.getContext(), getString(R.string.added_to_bag_feedback), Toast.LENGTH_SHORT).show();
                     }
@@ -114,8 +113,10 @@ public class ProductFragment extends Fragment {
         });
     }
 
-    private void updateButtonText(ProductDetails productDetails) {
-        int quantity = ShoppingApplication.getBagHelper().getQuantityAdded(productDetails.ProductId);
+    // We are using productId instead of productDetails because the data we are receiving are inconsistent
+    // and we always received the same product details, no matter the productId
+    private void updateButtonText(ProductDetails productDetails, int productId) {
+        int quantity = ShoppingApplication.getBagHelper().getQuantityAdded(productId);
         mAddToBag.setText(getString(R.string.added_to_bag, quantity, productDetails.CurrentPrice));
     }
 }

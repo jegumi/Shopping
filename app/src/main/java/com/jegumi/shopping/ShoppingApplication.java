@@ -1,6 +1,7 @@
 package com.jegumi.shopping;
 
 import android.app.Application;
+import android.content.Context;
 import android.graphics.Bitmap;
 
 import com.jegumi.shopping.helpers.BagHelper;
@@ -16,12 +17,15 @@ public class ShoppingApplication extends Application {
     private static BagHelper mBagHelper;
     private static FavouritesHelper mFavouritesHelper;
     private static Bus mBus;
+    private static Context mContext;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mBagHelper = new BagHelper();
+        mFavouritesHelper = new FavouritesHelper();
         mBus = new Bus();
+        mContext = getApplicationContext();
         createImageCache();
     }
 
@@ -39,5 +43,9 @@ public class ShoppingApplication extends Application {
 
     public static Bus getBus() {
         return mBus;
+    }
+
+    public static Context getContext() {
+        return mContext;
     }
 }

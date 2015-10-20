@@ -17,4 +17,7 @@
     <color name="button_header_color_bg">#C3C3C3</color>
     <color name="button_header_color_pressed_bg">#F44336</color>
 
+    <color name="card_view_default_color">#ffffff</color>
+    <color name="card_view_favourite_color">#dc9a3c</color>
+
 </resources>

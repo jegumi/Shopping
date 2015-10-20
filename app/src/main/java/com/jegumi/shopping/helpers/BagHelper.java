@@ -19,4 +19,8 @@ public class BagHelper {
     public int getQuantityAdded(int productId) {
         return mBagMap.get(productId);
     }
+
+    public int getNumberOfElements() {
+        return mBagMap.size();
+    }
 }

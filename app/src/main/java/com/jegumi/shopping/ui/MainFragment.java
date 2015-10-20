@@ -17,12 +17,14 @@ import com.jegumi.shopping.ShoppingApplication;
 import com.jegumi.shopping.adapters.ProductsAdapter;
 import com.jegumi.shopping.events.UpdateCategoryEvent;
 import com.jegumi.shopping.model.Category;
+import com.jegumi.shopping.model.Product;
 import com.jegumi.shopping.model.Products;
 import com.jegumi.shopping.network.Api;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 // This class contains the recycler view that load the products of the category
@@ -53,11 +55,7 @@ public class MainFragment extends Fragment {
         mProductRecyclerView = (RecyclerView) view.findViewById(R.id.products_recycler_view);
         GridLayoutManager llm = new GridLayoutManager(getActivity(), getResources().getInteger(R.integer.num_columns));
         mProductRecyclerView.setLayoutManager(llm);
-
-        if (savedInstanceState != null) {
-            mCategory = (Category) savedInstanceState.getSerializable(MainActivity.EXTRA_CATEGORY);
-            refreshCategory();
-        }
+        mProductRecyclerView.setAdapter(new ProductsAdapter(new ArrayList<Product>()));
     }
 
     @Override
@@ -79,7 +77,7 @@ public class MainFragment extends Fragment {
     }
 
     private void refreshCategory() {
-        Api.loadProducts(getActivity(), mCategory.CategoryId, new Response.Listener<Products>() {
+        Api.loadProducts(mCategory.CategoryId, new Response.Listener<Products>() {
             @Override
             public void onResponse(Products products) {
                 mProductRecyclerView.setAdapter(new ProductsAdapter(Arrays.asList(products.Listings)));
@@ -94,11 +92,5 @@ public class MainFragment extends Fragment {
                 Toast.makeText(getActivity(), getString(resIdMessage), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(MainActivity.EXTRA_CATEGORY, mCategory);
     }
 }
