@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import com.jegumi.shopping.helpers.BagHelper;
 import com.jegumi.shopping.helpers.FavouritesHelper;
 import com.jegumi.shopping.network.ImageCacheManager;
-import com.squareup.otto.Bus;
 
 public class ShoppingApplication extends Application {
 
@@ -16,7 +15,6 @@ public class ShoppingApplication extends Application {
     private static final Bitmap.CompressFormat DISK_IMAGECACHE_COMPRESS_FORMAT = Bitmap.CompressFormat.PNG;
     private static BagHelper mBagHelper;
     private static FavouritesHelper mFavouritesHelper;
-    private static Bus mBus;
     private static Context mContext;
 
     @Override
@@ -24,7 +22,6 @@ public class ShoppingApplication extends Application {
         super.onCreate();
         mBagHelper = new BagHelper();
         mFavouritesHelper = new FavouritesHelper();
-        mBus = new Bus();
         mContext = getApplicationContext();
         createImageCache();
     }
@@ -39,10 +36,6 @@ public class ShoppingApplication extends Application {
 
     public static FavouritesHelper getFavouritesHelper() {
         return mFavouritesHelper;
-    }
-
-    public static Bus getBus() {
-        return mBus;
     }
 
     public static Context getContext() {

@@ -51,6 +51,13 @@
         <item name="android:layout_marginBottom">@dimen/spacing_medium</item>
     </style>
 
+    <style name="ErrorMessage" parent="HeaderTitle">
+        <item name="android:background">@color/main_bg</item>
+        <item name="android:drawableBottom">@drawable/ic_menu_refresh</item>
+        <item name="android:padding">@dimen/spacing_medium</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
     <style name="MenuItem">
         <item name="android:textSize">@dimen/menu_text_size</item>
         <item name="android:textStyle">bold</item>

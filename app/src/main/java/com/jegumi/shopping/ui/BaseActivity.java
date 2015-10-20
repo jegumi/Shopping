@@ -13,6 +13,9 @@ import com.jegumi.shopping.ShoppingApplication;
 
 public class BaseActivity extends ActionBarActivity {
 
+    public static final String EXTRA_PRODUCT = "com.jegumi.shopping.product_item";
+    public static final String EXTRA_MENU = "com.jegumi.shopping.menu";
+
     protected Toolbar mToolbar;
 
     public void setActionBar(boolean isHome) {

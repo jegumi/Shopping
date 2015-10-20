@@ -34,11 +34,10 @@
 
         <TextView
             android:id="@+id/error_message_text_view"
+            style="@style/ErrorMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/loading_image"
-            android:padding="@dimen/spacing_medium"
-            android:visibility="gone"
             android:layout_centerHorizontal="true"/>
 
         <ProgressBar

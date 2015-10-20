@@ -13,31 +13,23 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.jegumi.shopping.R;
-import com.jegumi.shopping.ShoppingApplication;
 import com.jegumi.shopping.adapters.ProductsAdapter;
-import com.jegumi.shopping.events.UpdateCategoryEvent;
 import com.jegumi.shopping.model.Category;
 import com.jegumi.shopping.model.Product;
 import com.jegumi.shopping.model.Products;
 import com.jegumi.shopping.network.Api;
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 // This class contains the recycler view that load the products of the category
-// It receives the category via a subscription to an event of the bus. This could
-// be done in other way, but I wanted to show how events works, and the advantages
-// of having a decouplated way of receive info (even thinking that in this case it's quite simple)
 
 public class MainFragment extends Fragment {
 
     private static final String TAG = MainFragment.class.getSimpleName();
 
     private RecyclerView mProductRecyclerView;
-    private Bus mBus = ShoppingApplication.getBus();
     private Category mCategory;
 
     public static MainFragment newInstance() {
@@ -58,21 +50,8 @@ public class MainFragment extends Fragment {
         mProductRecyclerView.setAdapter(new ProductsAdapter(new ArrayList<Product>()));
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mBus.register(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mBus.unregister(this);
-    }
-
-    @Subscribe
-    public void updateCategory(UpdateCategoryEvent event) {
-        mCategory = event.category;
+    public void updateCategory(Category category) {
+        mCategory = category;
         refreshCategory();
     }
 

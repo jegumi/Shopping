@@ -21,26 +21,16 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.jegumi.shopping.R;
-import com.jegumi.shopping.ShoppingApplication;
-import com.jegumi.shopping.events.UpdateCategoryEvent;
 import com.jegumi.shopping.model.Category;
 import com.jegumi.shopping.model.Menu;
 import com.jegumi.shopping.network.Api;
 
 import java.net.UnknownHostException;
 
-// Normally I'd have created a WelcomeActivity to contain the initial spinner and make some calls
-// to download the menu, but in this case, I'm using this class as initial screen to reuse the background
-// image as progress feedback to be shown everytime the info is reloaded (change of orientation, etc)
-// and give the feedback that the info is being reloaded
-
 public class MainActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = MainActivity.class.getName();
     private static final String CURRENT_CATEGORY = "currentCategory";
     private static final String CURRENT_POSITION = "currentPosition";
-
-    public static final String EXTRA_PRODUCT = "com.jegumi.shopping.product_item";
-    public static final String EXTRA_CATEGORY = "com.jegumi.shopping.category";
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -53,6 +43,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private Button mWomenButton;
     private MenuCategories mCurrentCategory;
     private int mCurrentPosition;
+    private MainFragment mMainFragment;
 
     public enum MenuCategories {
         MEN(0), WOMEN(1);
@@ -77,21 +68,39 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mErrorMessage = (TextView) findViewById(R.id.error_message_text_view);
         mLoadingProgressBar = (ProgressBar) findViewById(R.id.loading_progress_bar);
 
+        setActionBar(true);
+
         if (savedInstanceState != null) {
             mCurrentCategory = MenuCategories.getMenuCategories(savedInstanceState.getInt(CURRENT_CATEGORY));
             mCurrentPosition = savedInstanceState.getInt(CURRENT_POSITION);
         }
 
-        setActionBar(true);
         loadMainFragment();
         setDrawer();
-        setMenuAdapter();
+
+        if (getIntent() != null) {
+            Menu menu = (Menu) getIntent().getSerializableExtra(EXTRA_MENU);
+            loadMenu(menu);
+        }
+
+        setRetry();
+    }
+
+    private void setRetry() {
+        mErrorMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLoadingProgressBar.setVisibility(View.VISIBLE);
+                mErrorMessage.setVisibility(View.GONE);
+                refreshAdapter();
+            }
+        });
     }
 
     private void loadMainFragment() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        MainFragment mainFragment = MainFragment.newInstance();
-        ft.replace(R.id.main_container, mainFragment, TAG);
+        mMainFragment = MainFragment.newInstance();
+        ft.replace(R.id.main_container, mMainFragment, TAG);
         ft.commit();
     }
 
@@ -141,25 +150,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mDrawerList.addHeaderView(header, null, false);
     }
 
-    private void setMenuAdapter() {
+    private void refreshAdapter() {
         Api.loadCategories(mCurrentCategory, new Response.Listener<Menu>() {
                     @Override
                     public void onResponse(Menu menu) {
-                        Category[] categories = menu.Listing;
-                        mMenuAdapter = new SlidingAdapter(MainActivity.this);
-                        for (Category category : categories) {
-                            mMenuAdapter.add(new SlidingItem(category));
-                        }
-                        mDrawerList.setAdapter(mMenuAdapter);
-                        selectItem(mCurrentPosition);
-                        mLoadingView.setVisibility(View.GONE);
+                        loadMenu(menu);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
                         Log.e(TAG, "Error loading menu", volleyError);
-
                         mLoadingProgressBar.setVisibility(View.GONE);
                         mErrorMessage.setVisibility(View.VISIBLE);
                         int resIdMessage = volleyError.getCause() instanceof UnknownHostException ?
@@ -169,6 +170,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 });
     }
 
+    private void loadMenu(Menu menu) {
+        Category[] categories = menu.Listing;
+        mMenuAdapter = new SlidingAdapter(MainActivity.this);
+        for (Category category : categories) {
+            mMenuAdapter.add(new SlidingItem(category));
+        }
+        mDrawerList.setAdapter(mMenuAdapter);
+        selectItem(mCurrentPosition);
+        mLoadingView.setVisibility(View.GONE);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -176,13 +188,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 mMenButton.setActivated(true);
                 mWomenButton.setActivated(false);
                 mCurrentCategory = MenuCategories.MEN;
-                setMenuAdapter();
+                refreshAdapter();
                 break;
             case R.id.category_women:
                 mMenButton.setActivated(false);
                 mWomenButton.setActivated(true);
                 mCurrentCategory = MenuCategories.WOMEN;
-                setMenuAdapter();
+                refreshAdapter();
                 break;
         }
     }
@@ -225,7 +237,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void selectItem(int position) {
         mCurrentPosition = position;
         Category category = mMenuAdapter.getItem(position).category;
-        ShoppingApplication.getBus().post(new UpdateCategoryEvent(category));
+        mMainFragment.updateCategory(category);
     }
 
     @Override

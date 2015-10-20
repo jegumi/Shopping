@@ -10,7 +10,7 @@
     <string name="added_to_bag_feedback">Added to Bag</string>
     <string name="error_loading_category">Error adding category</string>
     <string name="error_loading_data">Error loading data</string>
-    <string name="error_no_connectivity">Cannot load data. Check your connectivity and try again</string>
+    <string name="error_no_connectivity">Cannot load the data. Check your connectivity and try again</string>
     <string name="added_favourites">Added to favourites</string>
     <string name="removed_favourites">Removed from favourites</string>
     <string name="price">%1$s %2$s</string>
