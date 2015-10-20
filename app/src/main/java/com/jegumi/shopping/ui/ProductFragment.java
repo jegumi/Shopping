@@ -2,6 +2,8 @@ package com.jegumi.shopping.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,26 +14,23 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.jegumi.shopping.R;
 import com.jegumi.shopping.ShoppingApplication;
+import com.jegumi.shopping.adapters.ProductsImagesAdapter;
 import com.jegumi.shopping.model.ProductDetails;
 import com.jegumi.shopping.network.Api;
-import com.jegumi.shopping.network.ImageCacheManager;
 
 import java.net.UnknownHostException;
+import java.util.Arrays;
 
 // Nothing interesting to comment here. This fragment doesn't change with rotation, as the
 // layout is quite simple, so in the manifest it's indicated not to reload it on config changes
-// As I didn't have too many time I didn't do the ScrollView for the images, but to do it
-// should be enough to add an recyclerView on this layout with an adapter managing the images
+
 
 public class ProductFragment extends Fragment {
 
-    private NetworkImageView mProductPhoto;
+    private RecyclerView mProductImagesRecyclerView;
     private Button mAddToBag;
-    private ImageLoader mImageLoader;
     private ProgressBar mProgressBar;
     private TextView mDetails;
     private TextView mBrandName;
@@ -55,11 +54,12 @@ public class ProductFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ((BaseActivity) getActivity()).setActionBar(false);
-        mImageLoader = ImageCacheManager.getInstance().getImageLoader();
 
         mBrandName = (TextView) view.findViewById(R.id.brand_text_view);
         mDetails = (TextView) view.findViewById(R.id.details_text_view);
-        mProductPhoto = (NetworkImageView) view.findViewById(R.id.product_image_details);
+        mProductImagesRecyclerView = (RecyclerView) view.findViewById(R.id.products_images_recycler_view);
+        mProductImagesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+
         mAddToBag = (Button) view.findViewById(R.id.add_bag_button);
         mErrorMessage = (TextView) view.findViewById(R.id.error_message_text_view);
         mProgressBar = (ProgressBar) view.findViewById(R.id.loading_progress_bar);
@@ -99,7 +99,7 @@ public class ProductFragment extends Fragment {
                     }
                 });
                 if (productDetails.ProductImageUrls != null && productDetails.ProductImageUrls.length > 0) {
-                    mProductPhoto.setImageUrl(productDetails.ProductImageUrls[0], mImageLoader);
+                    mProductImagesRecyclerView.setAdapter(new ProductsImagesAdapter(Arrays.asList(productDetails.ProductImageUrls)));
                 }
                 mProgressBar.setVisibility(View.GONE);
             }
@@ -108,8 +108,7 @@ public class ProductFragment extends Fragment {
             public void onErrorResponse(VolleyError volleyError) {
                 mProgressBar.setVisibility(View.GONE);
                 mErrorMessage.setVisibility(View.VISIBLE);
-                int resIdMessage =  volleyError.getCause() instanceof UnknownHostException ?
-                        R.string.error_no_connectivity : R.string.error_loading_data;
+                int resIdMessage = volleyError.getCause() instanceof UnknownHostException ? R.string.error_no_connectivity : R.string.error_loading_data;
                 mErrorMessage.setText(resIdMessage);
             }
         });

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.jegumi.shopping.R;
+import com.jegumi.shopping.ShoppingApplication;
 import com.jegumi.shopping.model.Product;
 import com.jegumi.shopping.network.ImageCacheManager;
 import com.jegumi.shopping.ui.MainActivity;
@@ -44,6 +45,9 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         if (mProducts.get(position).ProductImageUrl.length > 0) {
             holder.productPhoto.setImageUrl(product.ProductImageUrl[0], mImageLoader);
         }
+        if (ShoppingApplication.getFavouritesHelper().isInFavourites(holder.productId)) {
+            // Do something
+        }
     }
 
     @Override
@@ -51,7 +55,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         return mProducts.size();
     }
 
-    public static class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         public CardView cv;
         public TextView title;
         public TextView previousPrice;
@@ -74,6 +78,12 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             Intent intent = new Intent(v.getContext(), ProductActivity.class);
             intent.putExtra(MainActivity.EXTRA_PRODUCT, productId);
             v.getContext().startActivity(intent);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            ShoppingApplication.getFavouritesHelper().addToFavourites();
+            return false;
         }
     }
 }

@@ -7,11 +7,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/toolbar" />
+        <include layout="@layout/toolbar"/>
 
         <LinearLayout
+            android:id="@+id/images_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar"
             android:orientation="vertical">
 
@@ -19,24 +20,30 @@
                 android:id="@+id/brand_text_view"
                 style="@style/HeaderTitle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
 
-            <com.android.volley.toolbox.NetworkImageView
-                android:id="@+id/product_image_details"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/gallery_height" />
+                android:layout_height="@dimen/gallery_height">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/products_images_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </FrameLayout>
 
             <TextView
                 android:id="@+id/details_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_medium" />
+                android:layout_margin="@dimen/spacing_medium"/>
 
             <Button
                 android:id="@+id/add_bag_button"
                 style="@style/AddToButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
@@ -46,15 +53,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar"
             android:layout_centerHorizontal="true"
-            android:visibility="gone"
-            android:padding="@dimen/spacing_medium" />
+            android:padding="@dimen/spacing_medium"
+            android:visibility="gone"/>
 
         <ProgressBar
             android:id="@+id/loading_progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"/>
 
     </RelativeLayout>
+
 </ScrollView>
 
